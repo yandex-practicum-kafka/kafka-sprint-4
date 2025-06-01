@@ -1,7 +1,18 @@
+# Gradle files
+.gradle/
+build/
+out/
+**/build/
+**/out/
+
+# Gradle Wrapper files
+gradle/wrapper/gradle-wrapper.properties
+!gradle/wrapper/gradle-wrapper.jar  # Убедитесь, что это правило есть
+
 # Compiled class file
 *.class
 
-# Log file
+# Log files
 *.log
 
 # BlueJ files
@@ -19,6 +30,40 @@
 *.tar.gz
 *.rar
 
+# Eclipse files
+*.classpath
+*.project
+.settings/
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+
+# Visual Studio Code files
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Operating System files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Other files
+*.apk
+*.ap_
+*.dex
+*.bin
+*.log
+*.out
+*.so
+*.dll
+*.exe
