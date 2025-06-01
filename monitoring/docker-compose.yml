@@ -14,15 +14,33 @@ services:
      - zookeeper
     environment:
      - ZOOKEEPER_CONNECT=zookeeper:2181
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2019-latest
-    ports:
-     - 1433:1433
+#  sqlserver:
+#    image: mcr.microsoft.com/mssql/server:2019-latest
+#    ports:
+#     - 1433:1433
+#    environment:
+#     - ACCEPT_EULA=Y
+#     - MSSQL_PID=Standard
+#     - SA_PASSWORD=Password!
+#     - MSSQL_AGENT_ENABLED=true
+  postgres:
+    image: postgres:13-alpine
+    container_name: postgres
     environment:
-     - ACCEPT_EULA=Y
-     - MSSQL_PID=Standard
-     - SA_PASSWORD=Password!
-     - MSSQL_AGENT_ENABLED=true
+      POSTGRES_DB: testDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Password!
+    ports:
+      - "5432:5432"
+    volumes:
+#      - ./configs/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf
+    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   connect:
     build:
       context: debezium-jmx-exporter
@@ -34,7 +52,8 @@ services:
      - 1976:1976
     links:
      - kafka
-     - sqlserver
+#     - sqlserver
+     - postgres
     environment:
      - BOOTSTRAP_SERVERS=kafka:9092
      - GROUP_ID=1
