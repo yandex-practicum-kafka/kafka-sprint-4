@@ -10,7 +10,7 @@
     "database.dbname": "testDB",
     "database.server.id": "123456",
     "database.server.name": "dbserver1",
-    "table.include.list": "public.products, public.products_on_hand, public.customers, public.orders",
+    "table.include.list": "public.users, public.orders",
     "plugin.name": "pgoutput",
     "topic.prefix": "myapp"
   }
