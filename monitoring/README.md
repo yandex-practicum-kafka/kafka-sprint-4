@@ -11,7 +11,6 @@ monitoring/
 ├── generate_data.py
 ├── init-db.sql
 ├── inventory.sql
-├── output.txt
 ├── postgresql.conf
 ├── README.md
 ├── register-postgresql.json
