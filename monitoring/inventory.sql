@@ -6,7 +6,7 @@ CREATE DATABASE testDB;
 
 -- Create and populate our products using a single insert with many rows
 CREATE TABLE products (
-  id SERIAL PRIMARY KEY,  -- Изменяем на SERIAL для автоинкремента в PostgreSQL
+  id SERIAL PRIMARY KEY,  
   name VARCHAR(255) NOT NULL,
   description VARCHAR(512),
   weight FLOAT
@@ -31,7 +31,7 @@ CREATE TABLE products_on_hand (
 );
 
 INSERT INTO products_on_hand VALUES 
-  (1, 3),    -- Измените на соответствующие id из таблицы products
+  (1, 3),    
   (2, 8),
   (3, 18),
   (4, 4),
@@ -43,7 +43,7 @@ INSERT INTO products_on_hand VALUES
 
 -- Create some customers ...
 CREATE TABLE customers (
-  id SERIAL PRIMARY KEY,  -- Изменяем на SERIAL для автоинкремента в PostgreSQL
+  id SERIAL PRIMARY KEY,  
   first_name VARCHAR(255) NOT NULL,
   last_name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE
@@ -57,7 +57,7 @@ INSERT INTO customers(first_name, last_name, email) VALUES
 
 -- Create some very simple orders
 CREATE TABLE orders (
-  id SERIAL PRIMARY KEY,  -- Изменяем на SERIAL для автоинкремента в PostgreSQL
+  id SERIAL PRIMARY KEY,  
   order_date DATE NOT NULL,
   purchaser INTEGER NOT NULL,
   quantity INTEGER NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE orders (
 );
 
 INSERT INTO orders(order_date, purchaser, quantity, product_id) VALUES 
-  ('2016-01-16', 1, 1, 2),  -- Замените 1001 на 1, который создается в customers
-  ('2016-01-17', 2, 2, 5),  -- Замените 1002 на 2
-  ('2016-02-19', 2, 2, 6),  -- Замените 1002 на 2
-  ('2016-02-21', 3, 1, 7);  -- Замените 1003 на 3
+  ('2016-01-16', 1, 1, 2), 
+  ('2016-01-17', 2, 2, 5), 
+  ('2016-02-19', 2, 2, 6), 
+  ('2016-02-21', 3, 1, 7); 

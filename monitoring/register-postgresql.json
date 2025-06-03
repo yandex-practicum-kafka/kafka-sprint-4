@@ -12,6 +12,6 @@
     "database.server.name": "dbserver1",
     "table.include.list": "public.users, public.orders",
     "plugin.name": "pgoutput",
-    "topic.prefix": "myapp"
+    "topic.prefix": "test"
   }
 }
