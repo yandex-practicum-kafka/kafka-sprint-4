@@ -513,7 +513,7 @@ curl -X POST -H "Content-Type: application/json" --data @register-postgresql.jso
 ![containers_all.png](containers_all.png)
 
 5. Дополнительно, можно сменив конфигурацию (отключив автосоздание таблиц и сервис 
-генерации данных на Python, см. ранее), добавить тестовые данные самостоятельно:
+генерации данных на Python, см. ранее), добавить тестовые данные самостоятельно:  
 
 а. Подключение к контейнеру PostgreSQL  
 
