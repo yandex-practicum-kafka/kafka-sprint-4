@@ -5,30 +5,43 @@
 Проект предназначен для мониторинга данных из базы данных PostgreSQL с использованием архитектуры микро-сервисов, включающей инструменты Debezium, Prometheus и Grafana. Основная цель — отслеживание изменений в данных и визуализация этих изменений через мощные и гибкие дашборды.  
 
 ```
-monitoring/
-+-- .env
-+-- docker-compose.yml
-+-- generate_data.py
-+-- init-db.sql
-+-- inventory.sql
-+-- output.txt
-+-- postgresql.conf
-+-- README.md
-+-- register-postgresql.json
+debezium/
++-- gradle/
+¦   L-- wrapper/
+¦       +-- gradle-wrapper.jar
+¦       L-- gradle-wrapper.properties
++-- src/
+¦   L-- main/
+¦       L-- java/
+¦           L-- com/
+¦               L-- example/
+¦                   L-- kafkaconsumer/
+¦                       +-- KafkaConsumerApplication.java
+¦                       +-- config/
+¦                       ¦   L-- KafkaConsumerConfig.java
+¦                       L-- consumer/
+¦                            +-- EntityProcessor.java
+¦                            +-- GenericKafkaListener.java
+¦                            +-- Order.java
+¦                            +-- OrderProcessor.java
+¦                            +-- User.java
+¦                            L-- UserProcessor.java
+¦   L-- resources/
+¦       L-- application.yml
++-- configs/
+¦       +-- postgresql.conf
+¦       +-- init-db.sql
+¦       +-- debezium_publication.sql
+¦       +-- config.json
+¦       +-- register-postgres-connector.sh
+¦       L-- generate_data.py
 +-- images/
-¦   +-- dashboard.png
-¦   +-- dashboard_new.png
-¦   L-- dashboard_newest.png
-+-- debezium-grafana/
-¦   +-- Dockerfile
-¦   +-- dashboard.yml
-¦   +-- datasource.yml
-¦   L-- debezium-dashboard.json
-+-- debezium-jmx-exporter/
-¦   +-- Dockerfile
-¦   L-- config.yml
-L-- debezium-prometheus/
-    L-- Dockerfile
+¦   L-- ...
++-- build.gradle
++-- settings.gradle
++-- Dockerfile
++-- docker-compose.yml
+L-- README.md
 ```
 
 #### Основные компоненты проекта:  
