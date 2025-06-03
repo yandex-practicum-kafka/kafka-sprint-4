@@ -15,9 +15,12 @@ monitoring/
 ├── README.md
 ├── register-postgresql.json
 ├── images/
-│   ├── dashboard.png
-│   ├── dashboard_new.png
-│   └── dashboard_newest.png
+│   ├── containers_all.png 
+│   ├── containers_logs_all.png 
+│   ├── grafana_dashboard_1.png 
+│   ├── grafana_dashboard_2.png 
+│   ├── grafana_dashboard_3.png 
+│   └── grafana_dashboards.png 
 ├── debezium-grafana/
 │   ├── Dockerfile
 │   ├── dashboard.yml
