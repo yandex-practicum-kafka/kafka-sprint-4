@@ -1,8 +1,6 @@
-### Описание проекта  
+### Мониторинг изменений данных с помощью Debezium и Grafana  
 
-#### Название проекта: Мониторинг изменений данных с помощью Debezium и Grafana  
-
-Структура проекта:  
+#### Структура проекта:  
 
 Проект предназначен для мониторинга данных из базы данных PostgreSQL с использованием архитектуры микро-сервисов, включающей инструменты Debezium, Prometheus и Grafana. Основная цель — отслеживание изменений в данных и визуализация этих изменений через мощные и гибкие дашборды.  
 
@@ -427,36 +425,6 @@ COPY config.yml /kafka/etc/config.yml
 - `debezium-prometheus/`:  
   - Содержит [Dockerfile](debezium-prometheus/Dockerfile) для создания контейнера Prometheus, который отвечает за сбор и хранение метрик из систем и приложений.  
   
-#### 1. Запуск контейнеров
-Убедитесь, что ваш контейнер PostgreSQL запущен. Если вы используете docker-compose, выполните:
-
-```
-docker-compose up -d
-```
-
-#### 2. Подключение к контейнеру PostgreSQL
-Чтобы подключиться к PostgreSQL в контейнере, вы можете использовать команду docker exec. Если ваш контейнер называется postgres (как указано в вашем docker-compose.yml), выполните:
-
-```
-docker exec -it postgres psql -U postgres -d testDB
-```
-
-#### 3. Выполнение inventory.sql
-Чтобы выполнить SQL-скрипт [inventory.sql](inventory.sql), вам нужно либо загрузить файл в контейнер, либо использовать прямой доступ к тому, где находится ваш файл.
-
-#### Копирование файла в контейнер
-Если ваш [inventory.sql](inventory.sql) находится на вашем хосте, вы можете скопировать его в контейнер с помощью команды docker cp:
-
-```
-docker cp path/to/inventory.sql postgres:/tmp/inventory.sql
-```
-
-Затем, подключившись к контейнеру, выполните:
-
-```
-docker exec -it postgres psql -U postgres -d testDB -f /tmp/inventory.sql
-```
-
 ### Описание файла конфигурации для Debezium Connector PostgreSQL
 
 Файл конфигурации JSON (например, [register-postgresql.json](register-postgresql.json)) содержит настройки для подключения Debezium к базе данных PostgreSQL и определения того, какие изменения должны отслеживаться и куда они отправляются. Основные параметры в файле включают:
@@ -475,8 +443,6 @@ docker exec -it postgres psql -U postgres -d testDB -f /tmp/inventory.sql
 - `plugin.name`: Плагин для логического декодирования, используемый в PostgreSQL.
 - `topic.prefix`: Префикс тем Kafka, в которые будут отправляться изменения. Например, если префикс `test`, изменения в таблице `public.products` будут отправляться в тему `test.public.products`.
 
-### Зачем мы используем curl
-
 Команда `curl` используется для отправки POST-запроса на сервер Kafka Connect, чтобы зарегистрировать новый коннектор на основе настроек, указанных в файле конфигурации. Это действие запускает процесс отслеживания изменений в указанных таблицах PostgreSQL и их отправки в соответствующие темы Kafka. В частности, мы используем следующую команду:
 
 ```
@@ -490,12 +456,87 @@ curl -X POST -H "Content-Type: application/json" --data @register-postgresql.jso
 
 Т.е. команда `curl` и файл конфигурации совместно позволяют установить связь между Debezium и нашей базой данных PostgreSQL для эффективного отслеживания и передачи изменений данных.
 
-### Вариант отображаемых в Grafana данных
+#### Запуск проекта
 
-![dashboard_1.png](images/dashboard_1.png)
+1. Запуск контейнеров
 
-![dashboard_2.png](images/dashboard_2.png)
+Выполняем сборку [docker-compose.yml](docker-compose.yml):
+
+```
+docker-compose build
+```
+... и запуск:
+
+```
+docker-compose up -d
+```
+
+2. Подключившись к базе PostgreSQL, создаём публикацию и слот репликации:  
+
+```
+docker exec -it postgres psql -U postgres -d testDB
+```
+
+```
+CREATE PUBLICATION debezium_publication FOR TABLE users, orders;
+SELECT * FROM pg_create_logical_replication_slot('debezium_slot', 'pgoutput');
+```
+
+3. Зарегистрируем Debezium connector:  
+
+```
+curl -X POST -H "Content-Type: application/json" --data @register-postgresql.json  http://localhost:8083/connectors
+```
+
+4. Просмотр dashboard-ов в Grarafa:
+
+Переходим по адресу http://localhost:3000 и вводим дважды 'admin/admin'. 
+
+Далее переходим в раздел http://localhost:3000/dashboards и выбираем Debezium:
+
+![grafana_dashboards.png](grafana_dashboards.png)
+
+Далее, например: 
+
+![grafana_dashboard_1.png](grafana_dashboard_1.png)
+
+![grafana_dashboard_2.png](grafana_dashboard_2.png)
+
+![grafana_dashboard_3.png](grafana_dashboard_3.png)
+
+В логах при этом:
+
+![containers_logs_all.png](containers_logs_all.png)
+
+Общая работа сервисов:
+
+![containers_all.png](containers_all.png)
+
+5. Дополнительно, можно сменив конфигурацию (отключив автосоздание таблиц и сервис 
+генерации данных на Python, см. ранее), добавить тестовые данные самостоятельно:
+
+а. Подключение к контейнеру PostgreSQL  
+
+Чтобы подключиться к PostgreSQL в контейнере, используем команду `docker exec`. 
+Контейнер называется postgres (см. [docker-compose.yml](docker-compose.yml)),
+выполняем:  
+
+```
+docker exec -it postgres psql -U postgres -d testDB
+```
+
+б. Создание таблиц и наполнение тестовых данных, с использованием [inventory.sql](inventory.sql):  
+
+```
+docker cp path/to/inventory.sql postgres:/tmp/inventory.sql
+```
+
+Затем, подключившись к контейнеру, выполняем:  
+
+```
+docker exec -it postgres psql -U postgres -d testDB -f /tmp/inventory.sql
+```
 
 ### Заключение
 
-Таким образом, проект предоставляет разработчикам и администраторам баз данных платформу для мониторинга и визуализации изменений данных в PostgreSQL. С использованием таких технологий, как Debezium, Prometheus и Grafana, мы можем эффективно отслеживать важные изменения и предоставлять актуальную информацию через интерактивные дашборды.
+Таким образом, проект предоставляет разработчикам и администраторам бд платформу для мониторинга и визуализации изменений данных в PostgreSQL. С использованием таких технологий, как Debezium, Prometheus и Grafana, мы можем эффективно отслеживать важные изменения и предоставлять актуальную информацию через интерактивные дашборды.
