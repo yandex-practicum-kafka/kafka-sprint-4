@@ -157,8 +157,8 @@ max_wal_senders = 10
 wal_keep_size = 64MB
 ```
   
-- Данные создаются автоматически (DDL при старте приложения (инициализация бд), 
-записи в бд — по мере скрипта, работа сервиса Python 
+- Данные создаются автоматически (DDL при старте приложения (инициализация бд),  
+записи в бд — по мере скрипта, работа сервиса Python  
 (`data-generator`, см. [docker-compose.yml](docker-compose.yml))).  
 
 Код скрипта генерации данных см. в [generate_data.py](generate_data.py). DDL см. в [init-db.sql](init-db.sql):
