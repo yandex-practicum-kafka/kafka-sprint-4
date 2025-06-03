@@ -5,30 +5,7 @@
 Проект предназначен для мониторинга данных из базы данных PostgreSQL с использованием архитектуры микро-сервисов, включающей инструменты Debezium, Prometheus и Grafana. Основная цель — отслеживание изменений в данных и визуализация этих изменений через мощные и гибкие дашборды.  
 
 ```
-monitoring/
-+-- .env
-+-- docker-compose.yml
-+-- generate_data.py
-+-- init-db.sql
-+-- inventory.sql
-+-- output.txt
-+-- postgresql.conf
-+-- README.md
-+-- register-postgresql.json
-+-- images/
-¦   +-- dashboard.png
-¦   +-- dashboard_new.png
-¦   L-- dashboard_newest.png
-+-- debezium-grafana/
-¦   +-- Dockerfile
-¦   +-- dashboard.yml
-¦   +-- datasource.yml
-¦   L-- debezium-dashboard.json
-+-- debezium-jmx-exporter/
-¦   +-- Dockerfile
-¦   L-- config.yml
-L-- debezium-prometheus/
-    L-- Dockerfile
+
 ```
 
 #### Основные компоненты проекта:  
