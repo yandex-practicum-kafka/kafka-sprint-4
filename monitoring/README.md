@@ -492,23 +492,23 @@ curl -X POST -H "Content-Type: application/json" --data @register-postgresql.jso
 
 Далее переходим в раздел http://localhost:3000/dashboards и выбираем Debezium:
 
-![grafana_dashboards.png](images/grafana_dashboards.png)
+![grafana_dashboards.png](images/grafana_dashboards.png)  
 
 Далее, например: 
 
-![grafana_dashboard_1.png](images/grafana_dashboard_1.png)
+![grafana_dashboard_1.png](images/grafana_dashboard_1.png)  
 
-![grafana_dashboard_2.png](images/grafana_dashboard_2.png)
+![grafana_dashboard_2.png](images/grafana_dashboard_2.png)  
 
-![grafana_dashboard_3.png](images/grafana_dashboard_3.png)
+![grafana_dashboard_3.png](images/grafana_dashboard_3.png)  
 
 В логах при этом:
 
-![containers_logs_all.png](images/containers_logs_all.png)
+![containers_logs_all.png](images/containers_logs_all.png)  
 
 Общая работа сервисов:
 
-![containers_all.png](images/containers_all.png)
+![containers_all.png](images/containers_all.png)  
 
 5. Дополнительно, можно сменив конфигурацию (отключив автосоздание таблиц и сервис 
 генерации данных на Python, см. ранее), добавить тестовые данные самостоятельно:  
